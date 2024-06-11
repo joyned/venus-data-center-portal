@@ -53,7 +53,7 @@ const MenuItemSelectItems = styled(MenuItemSelect)`
     display: none;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 99;
 `;
 
 const MenuItemSelectItemsItem = styled.div`
@@ -109,7 +109,7 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
                     </MenuLogo>
                     <MenuNav>
                         <MenuItem>
-                            <MenuItemText>
+                            <MenuItemText onClick={() => navigate('/home')}>
                                 <IoHomeOutline />
                                 Home
                             </MenuItemText>

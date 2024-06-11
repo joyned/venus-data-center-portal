@@ -10,6 +10,7 @@ import Toast from "../components/Toast";
 import DashboardModel from "../models/DashboardModel";
 import { executeDashboard } from "../services/DashboardExecutionService";
 import { findDashboardById } from "../services/DashboardService";
+import { exportDataToExcel } from "../services/ExcelService";
 import { extractParameters } from "../services/FilterExtractorService";
 
 export default function DashboardPageView() {
@@ -63,6 +64,17 @@ export default function DashboardPageView() {
         setParameters({ ...parameters, [filterName]: e.target.value })
     }
 
+    const exportSheet = (e: any) => {
+        e.preventDefault();
+        if (!result || result.length === 0) {
+            toast.current.showWarn("Warning", "No data to export.");
+            return;
+        }
+
+        toast.current.showSuccess("Exporting", "Exporting data to XLSX/CSV. Your download will start shortly.");
+        exportDataToExcel(result, dashboard?.name || "export");
+    }
+
     return (
         <>
             <Toast ref={toast}></Toast>
@@ -78,7 +90,7 @@ export default function DashboardPageView() {
                     })}
                     <Button label="Search"></Button>
                     <Button type="reset" label="Clear Filters" transparent></Button>
-                    <Button label="Export CSV" type="button" transparent></Button>
+                    <Button label="Export XLSX/CSV" type="button" transparent onClick={exportSheet}></Button>
                 </form>
             </Panel>
             <Panel title={dashboard?.name}>

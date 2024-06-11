@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import ButtonConfirm from "../components/ButtonConfirm";
@@ -25,6 +26,7 @@ export default function DashboardPage() {
             <Table>
                 <TableHead>
                     <TableRow>
+                        <TableTh><MdFavorite /></TableTh>
                         <TableTh>Dashboard Name</TableTh>
                         <TableTh>Actions</TableTh>
                     </TableRow>
@@ -34,6 +36,7 @@ export default function DashboardPage() {
                         dashboards.map((dashboard) => {
                             return (
                                 <TableRow key={dashboard.id}>
+                                    <TableCell><MdFavoriteBorder style={{ cursor: "pointer" }} /></TableCell>
                                     <TableCell>{dashboard.name}</TableCell>
                                     <TableCell>
                                         <Button label="Open" onClick={() => navigate(`/dashboard/view/${dashboard.id}`)}></Button>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Form, useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import ButtonConfirm from "../components/ButtonConfirm";
 import FormItem from "../components/FormItem";
@@ -13,6 +13,7 @@ import ConnectorModel from "../models/ConnectorModel";
 import DashboardModel from "../models/DashboardModel";
 import { findAllConnectors } from "../services/ConnectorService";
 import { findDashboardById, saveDashboard } from "../services/DashboardService";
+import MultipleInput from "../components/MultipleInput";
 
 export default function DashboardPageForm() {
     const params = useParams();
@@ -27,6 +28,8 @@ export default function DashboardPageForm() {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [queryText, setQueryText] = useState('');
+
+    const [usersWithPermission, setUsersWithPermission] = useState<string[]>([]);
 
     useEffect(() => {
         const id = params.id;
@@ -92,31 +95,42 @@ export default function DashboardPageForm() {
         navigate('/dashboard');
     }
 
+    const onAddUser = (value: string) => {
+        setUsersWithPermission([...usersWithPermission, value]);
+    }
+
     return (
-        <Panel title={dashboardId ? 'Existing' : 'New Dashboard'} help={helpTemplate}>
-            <Toast ref={toast}></Toast>
-            <form onSubmit={onSubmit}>
+        <>
+            <Panel title={dashboardId ? 'Existing' : 'New Dashboard'} help={helpTemplate}>
+                <Toast ref={toast}></Toast>
+                <form onSubmit={onSubmit}>
+                    <FormItem>
+                        <span>Name</span>
+                        <Input type="text" value={name} onChange={(e) => setName(e.target.value)}></Input>
+                    </FormItem>
+                    <FormItem>
+                        <span>Description</span>
+                        <Input type="text" value={description} onChange={(e) => setDescription(e.target.value)}></Input>
+                    </FormItem>
+                    <FormItem>
+                        <span>Connector</span>
+                        <Select options={connectorOptions} value={selectedConnector} onChange={(value: any) => {
+                            setSelectedConnector(value)
+                        }}></Select>
+                    </FormItem>
+                    <FormItem>
+                        <span>Query</span>
+                        <TextArea value={queryText} onChange={(e) => setQueryText(e.target.value)}></TextArea>
+                    </FormItem>
+                    <Button type="button" label="Save"></Button>
+                    <ButtonConfirm label="Cancel" callback={handleCancelYes} transparent></ButtonConfirm>
+                </form>
+            </Panel>
+            <Panel title="Dashboard Permission">
                 <FormItem>
-                    <span>Name</span>
-                    <Input type="text" value={name} onChange={(e) => setName(e.target.value)}></Input>
+                    <MultipleInput label="Users with access" value={usersWithPermission} onAdd={onAddUser}></MultipleInput>
                 </FormItem>
-                <FormItem>
-                    <span>Description</span>
-                    <Input type="text" value={description} onChange={(e) => setDescription(e.target.value)}></Input>
-                </FormItem>
-                <FormItem>
-                    <span>Connector</span>
-                    <Select options={connectorOptions} value={selectedConnector} onChange={(value: any) => {
-                        setSelectedConnector(value)
-                    }}></Select>
-                </FormItem>
-                <FormItem>
-                    <span>Query</span>
-                    <TextArea value={queryText} onChange={(e) => setQueryText(e.target.value)}></TextArea>
-                </FormItem>
-                <Button label="Save"></Button>
-                <ButtonConfirm label="Cancel" callback={handleCancelYes} transparent></ButtonConfirm>
-            </form>
-        </Panel>
+            </Panel>
+        </>
     )
 }

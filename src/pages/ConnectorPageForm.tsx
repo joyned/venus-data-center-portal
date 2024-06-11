@@ -215,7 +215,8 @@ export default function ConnectorPageForm() {
             username: dbUser,
             password: dbPassword,
             engine: dbEngine,
-            testQuery: dbTestConnection
+            testQuery: dbTestConnection,
+            type: ""
         }
 
         testConnection(connector).then(() => {

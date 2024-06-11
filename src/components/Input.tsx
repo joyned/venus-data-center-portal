@@ -31,7 +31,8 @@ export default function Input(props: {
     value?: any,
     disabled?: boolean
     max?: string,
-    required?: boolean
+    required?: boolean,
+    onKeyPress?: (event: any) => void
 }) {
     return (
         <Ipt type={props.type}
@@ -40,7 +41,8 @@ export default function Input(props: {
             onChange={props.onChange}
             disabled={props.disabled}
             max={props.max}
-            required={props.required}>
+            required={props.required}
+            onKeyUp={props.onKeyPress}>
         </Ipt>
     )
 }

@@ -55,6 +55,7 @@ export default function ConnectorPage() {
                         return (
                             <TableRow key={connector.id}>
                                 <TableCell>{connector.name}</TableCell>
+                                <TableCell>{connector.type}</TableCell>
                                 <TableCell>
                                     <Button label="Edit" onClick={() => navigate(`/connector/${connector.id}`)}></Button>
                                     <ButtonConfirm confirmText={getConfirmText(connector)} confirmTitle={connector.name}

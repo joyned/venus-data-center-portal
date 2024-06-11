@@ -7,6 +7,7 @@ export interface ToastMethods {
     show: (title: string, message: string) => void;
     showSuccess: (title: string, message: string) => void;
     showError: (title: string, message: string) => void;
+    showWarn: (title: string, message: string) => void;
 }
 
 const ToastComponent = styled.div`
@@ -57,6 +58,16 @@ const Toast: React.ForwardRefRenderFunction<ToastMethods, any> = (props, ref) =>
         },
         showError: (title: string, message: string) => {
             setToastColor(color.danger);
+            setTitle(title);
+            setMessage(message);
+            setIsVisible(true);
+            if (timerRef.current) clearTimeout(timerRef.current);
+            timerRef.current = setTimeout(() => {
+                setIsVisible(false);
+            }, 10000);
+        },
+        showWarn: (title: string, message: string) => {
+            setToastColor(color.warning);
             setTitle(title);
             setMessage(message);
             setIsVisible(true);
