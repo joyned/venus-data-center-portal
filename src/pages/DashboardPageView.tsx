@@ -6,11 +6,11 @@ import Input from "../components/Input";
 import { useLoading } from "../components/Loading";
 import Panel from "../components/Panel";
 import { Table, TableBody, TableCell, TableHead, TableRow, TableTh } from "../components/Table";
+import Toast from "../components/Toast";
 import DashboardModel from "../models/DashboardModel";
 import { executeDashboard } from "../services/DashboardExecutionService";
 import { findDashboardById } from "../services/DashboardService";
 import { extractParameters } from "../services/FilterExtractorService";
-import Toast from "../components/Toast";
 
 export default function DashboardPageView() {
     const { setLoading } = useLoading();
@@ -20,6 +20,7 @@ export default function DashboardPageView() {
     const [filters, setFilters] = useState<{ name: string, parameter: string }[]>([]);
     const [result, setResult] = useState<any[]>([]);
     const [parameters, setParameters] = useState<any>({});
+    const [noData, setNoData] = useState<boolean>(true);
 
     useEffect(() => {
         setLoading(true);
@@ -29,6 +30,13 @@ export default function DashboardPageView() {
                 setDashboard(data);
                 const extratedFilters = extractParameters(data.query);
                 setFilters(extratedFilters)
+
+                if (data.connector.type === 'REST') {
+                    const extractedParameters = extractParameters(data.connector.url);
+                    setFilters([...filters, ...extractedParameters])
+                    extractedParameters.map((filter) => setParameters({ ...parameters, [filter.parameter]: "" }))
+                }
+
                 extratedFilters.map((filter) => setParameters({ ...parameters, [filter.parameter]: "" }))
                 setLoading(false);
             })
@@ -38,9 +46,12 @@ export default function DashboardPageView() {
     const onFilter = (e: any) => {
         e.preventDefault();
         if (dashboard?.id) {
+            console.log(parameters);
             setLoading(true);
+            setResult([])
             executeDashboard(dashboard?.id, parameters).then((data) => {
                 setResult(data)
+                setNoData(false)
             }).catch((error) => {
                 toast.current.showError("Error", error.data.message);
             }).finally(() => setLoading(false));
@@ -80,7 +91,7 @@ export default function DashboardPageView() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {result.map((row, index) => {
+                        {result && result.map((row, index) => {
                             return (
                                 <TableRow key={index}>
                                     {Object.keys(row).map((key) => {
@@ -89,6 +100,10 @@ export default function DashboardPageView() {
                                 </TableRow>
                             )
                         })}
+                        {noData &&
+                            <TableRow>
+                                <TableCell colSpan={result.length > 0 ? Object.keys(result[0]).length : 1}>No data found</TableCell>
+                            </TableRow>}
                     </TableBody>
                 </Table>
             </Panel>

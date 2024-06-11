@@ -90,7 +90,7 @@ export default function ConnectorPageForm() {
     const [dbTestConnection, setDbTestConnection] = useState<string>('');
 
     const [restUrl, setRestUrl] = useState<string>('');
-    const [restMethod, setRestMethod] = useState<string>('');
+    const [restMethod, setRestMethod] = useState<any>('');
     const [restHeaders, setRestHeaders] = useState<string>('');
 
     useEffect(() => {
@@ -131,7 +131,8 @@ export default function ConnectorPageForm() {
                     setRestUrl(data.url);
                 }
                 if (data.method) {
-                    setRestMethod(data.method);
+                    setSelectedOption(options[1]);
+                    setRestMethod(httpMethods[httpMethods.findIndex((e) => e.name === data.method)]);
                 }
                 if (data.headers) {
                     setRestHeaders(data.headers);
@@ -281,15 +282,15 @@ export default function ConnectorPageForm() {
                     <>
                         <FormItem>
                             <span>URL</span>
-                            <Input type="text" onChange={(e) => setRestUrl(e.target.value)}></Input>
+                            <Input type="text" value={restUrl} onChange={(e) => setRestUrl(e.target.value)}></Input>
                         </FormItem>
                         <FormItem>
                             <span>Method</span>
-                            <Select options={httpMethods} onChange={(e) => setRestMethod(e)}></Select>
+                            <Select options={httpMethods} value={restMethod} onChange={(e) => setRestMethod(e)}></Select>
                         </FormItem>
                         <FormItem>
                             <span>Headers</span>
-                            <TextArea onChange={(e) => setRestHeaders(e.target.value)}></TextArea>
+                            <TextArea value={restHeaders} onChange={(e) => setRestHeaders(e.target.value)}></TextArea>
                         </FormItem>
                     </>
                 ) : null}
