@@ -1,11 +1,42 @@
 const colorLight = {
-    'primary': '#1c8daa',
-    'secondary': '#004a64',
+    'primary': '#d14040',
+    'secondary': '#00769f',
 }
 
 const colorDark = {
-    'primary': '#652F2C',
+    'primary': '#d14040',
     'secondary': '#1e272b',
+}
+
+export const text = {
+    'default': localStorage.getItem('theme') === 'dark' ? 'white' : 'black',
+    'secondary': '#6c757d',
+    'placeholder': '#6c757d',
+    'fontSize': '16px'
+}
+
+
+const menuLight = {
+    left: 'white',
+    top: 'white',
+    textColor: text.default
+}
+
+const menuDark = {
+    left: '#1e1e1e',
+    top: '#1e1e1e',
+    textColor: 'white',
+}
+
+export const container = {
+    backgroundColor: localStorage.getItem('theme') === 'dark' ? '#353535' : 'white',
+}
+
+export const menu = {
+    left: localStorage.getItem('theme') === 'dark' ? menuDark.left : menuLight.left,
+    top: localStorage.getItem('theme') === 'dark' ? menuDark.top : menuLight.top,
+    textColor: localStorage.getItem('theme') === 'dark' ? menuDark.textColor : menuLight.textColor,
+    borderBottom: '#c5c5c5'
 }
 
 export const color = {
@@ -20,16 +51,11 @@ export const color = {
     'white': '#ffffff',
     'black': '#000000',
     'transparent': 'transparent',
+    'lightGrey': '#9e9e9e',
 }
 
-export const text = {
-    'default': localStorage.getItem('theme') === 'dark' ? 'white' : '#343a40',
-    'secondary': '#6c757d',
-    'placeholder': '#6c757d',
-    'fontSize': '16px'
-}
 
 export const panel = {
-    backgroundColor: localStorage.getItem('theme') === 'dark' ? colorDark.secondary : 'white',
+    backgroundColor: localStorage.getItem('theme') === 'dark' ? menu.left : 'white',
     textColor: localStorage.getItem('theme') === 'dark' ? 'white' : colorDark.secondary,
 }

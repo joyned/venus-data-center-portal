@@ -67,7 +67,7 @@ export default function DashboardPageForm() {
                     setSelectedConnector(data.connector);
                 }).finally(() => setLoading(false));
             }
-        }).finally(() => setLoading(false));
+        });
 
     }, [params.id, setLoading])
 

@@ -1,14 +1,15 @@
 import { ReactElement, useEffect, useState } from "react";
-import { CiSettings, CiViewList } from "react-icons/ci";
-import { FaAngleRight } from "react-icons/fa";
+import { CiDark, CiSettings, CiViewList } from "react-icons/ci";
+import { FaAngleDown, FaUserCircle } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
 import { IoHomeOutline } from "react-icons/io5";
-import { MdConnectedTv, MdOutlineCreateNewFolder, MdOutlineDashboard } from "react-icons/md";
+import { MdConnectedTv, MdDarkMode, MdOutlineCreateNewFolder, MdOutlineDashboard } from "react-icons/md";
 import { TbLayoutDashboard } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Input from "../components/Input";
 import Loading, { useLoading } from "../components/Loading";
-import { color } from "../components/ui/variables";
+import { color, container, menu } from "../components/ui/variables";
 import { getDashboardPagesFromCookiesWithMostAccessLimit3 } from "../services/CookieService";
 
 const MainLayoutContainer = styled.div`
@@ -16,9 +17,7 @@ const MainLayoutContainer = styled.div`
     flex-direction: row;
     display: flex;
     flex-direction: row;
-    background-image: ${localStorage.getItem('theme') === 'dark' ? 'url("/login-background-invert.png")' : 'url("/login-background.svg")'};
-    background-position: center center;
-    background-size: 100%;
+    background-color: ${container.backgroundColor};
     min-width: 100vw;
     min-height: 100vh;
 `
@@ -27,45 +26,48 @@ const Menu = styled.div`
     position: fixed;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 10px 20px;
+    margin-top: 40px;
     height: 100vh;
-    width: 140px;
-    background-color: ${color.primary};
+    width: 190px;
+    background-color: ${menu.left};
+    border-right: 1px solid ${menu.borderBottom};
 `;
 
 const MenuNav = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 20px;
     margin-top: 20px;
 `
 
 const TopMenu = styled.div`
     position: fixed;
-    background-color: ${color.secondary};
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: ${menu.left};
+    border-bottom: 1px solid ${menu.borderBottom};
     width: 100%;
-    padding: 20px;
-    margin-left: 180px;
+    padding: 10px 25px;
 `
 
 const MenuItemSelect = styled.div`
-    position: absolute;
-    left: 80px;
 `;
 
 const MenuItemSelectItems = styled(MenuItemSelect)`
     top: -20px;
-    background-color: ${color.primary};
-    position: absolute;
-    display: none;
+    background-color: ${menu.left};
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    margin-top: 15px;
     z-index: 99;
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
+    -webkit-transition: opacity 600ms, visibility 600ms;
+            transition: opacity 600ms, visibility 600ms;
 `;
 
 const MenuItemSelectItemsItem = styled.div`
-    color: white;
+    color: ${menu.textColor};
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -74,40 +76,75 @@ const MenuItemSelectItemsItem = styled.div`
 `
 
 const MenuItem = styled.div`
-    color: white;
+    color: ${menu.textColor};
     cursor: pointer;
+    padding: 20px 15px;
+    border-bottom: 1px solid ${color.lightGrey};
 
     &:hover ${MenuItemSelectItems} {
-        display: block;
+        visibility: visible;
+        opacity: 1;
+        animation: fade 1s;
+        max-height: 1000px;
     }
 `
 
 const MenuItemText = styled.div`
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
+    font-weight: 400;
 `
 
 const PageContainer = styled.div`
     padding: 20px;
-    margin-left: 180px;
+    margin-left: 240px;
     margin-top: 70px;
     width: 100%;
 `;
 
 const MenuLogo = styled.div`
     width: 100%;
-    height: 100px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 
     img {
-        width: 125px;
+        width: 40px;
+    }
+
+    span {
+        font-size: medium;
+        font-weight: 300;
+        color: ${menu.textColor};
     }
 `
+
+const LeftItem = styled.div``;
+const RightItem = styled.div`
+    margin-right: 60px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    svg {
+        cursor: pointer;
+        font-size: x-large;
+        color: ${menu.textColor};
+    }
+
+    input {
+        margin: 0;
+        padding: 7px;
+        font-size: small;
+    }
+`;
 
 export default function MainLayout(props: { children: ReactElement | ReactElement[] }) {
     const navigate = useNavigate();
     const { loading } = useLoading();
-    const [mostAccessedDashboards, setMostAccessedDashboards] = useState([]);
+    const [actualTheme, setActualTheme] = useState(localStorage.getItem('theme'));
 
     useEffect(() => {
         const dash = getDashboardPagesFromCookiesWithMostAccessLimit3();
@@ -122,6 +159,8 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
         } else {
             localStorage.setItem('theme', 'dark');
         }
+
+        setActualTheme(localStorage.getItem('theme'));
         window.location.reload();
     }
 
@@ -129,9 +168,6 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
         <Loading isLoading={loading}>
             <MainLayoutContainer>
                 <Menu>
-                    <MenuLogo>
-                        <img src="/logo512.png" alt="" />
-                    </MenuLogo>
                     <MenuNav>
                         <MenuItem>
                             <MenuItemText onClick={() => navigate('/home')}>
@@ -143,7 +179,7 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
                             <MenuItemText>
                                 <MdOutlineDashboard />
                                 Dashboards
-                                <FaAngleRight />
+                                <FaAngleDown />
                             </MenuItemText>
                             <MenuItemSelect>
                                 <MenuItemSelectItems>
@@ -172,7 +208,7 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
                             <MenuItemText>
                                 <CiSettings />
                                 Settings
-                                <FaAngleRight />
+                                <FaAngleDown />
                             </MenuItemText>
                             <MenuItemSelect>
                                 <MenuItemSelectItems>
@@ -194,7 +230,17 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
                     </MenuNav>
                 </Menu>
                 <TopMenu>
-                    <MenuItem onClick={changeTheme}>Change Theme</MenuItem>
+                    <LeftItem>
+                        <MenuLogo>
+                            <img src="/logo512.png" alt="" />
+                            <span>Venus Data Center</span>
+                        </MenuLogo>
+                    </LeftItem>
+                    <RightItem>
+                        <Input type="text" placeholder="Search"></Input>
+                        {actualTheme === 'dark' ? <MdDarkMode onClick={changeTheme} /> : <CiDark onClick={changeTheme} />}
+                        <FaUserCircle></FaUserCircle>
+                    </RightItem>
                 </TopMenu>
                 <PageContainer>
                     {props.children}
