@@ -28,9 +28,9 @@ const Menu = styled.div`
     flex-direction: column;
     margin-top: 40px;
     height: 100vh;
-    width: 190px;
+    width: 235px;
     background-color: ${menu.left};
-    border-right: 1px solid ${menu.borderBottom};
+    border-right: 1px solid ${color.borderColor};
 `;
 
 const MenuNav = styled.div`
@@ -44,21 +44,20 @@ const TopMenu = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: ${menu.left};
-    border-bottom: 1px solid ${menu.borderBottom};
+    background-color: ${menu.top};
+    border-bottom: 1px solid ${color.borderColor};
     width: 100%;
     padding: 10px 25px;
 `
 
 const MenuItemSelect = styled.div`
+    max-height: fit-content;
 `;
 
 const MenuItemSelectItems = styled(MenuItemSelect)`
-    top: -20px;
     background-color: ${menu.left};
     min-width: 160px;
     margin-top: 15px;
-    z-index: 99;
     visibility: hidden;
     opacity: 0;
     max-height: 0;
@@ -78,10 +77,11 @@ const MenuItemSelectItemsItem = styled.div`
 const MenuItem = styled.div`
     color: ${menu.textColor};
     cursor: pointer;
-    padding: 20px 15px;
-    border-bottom: 1px solid ${color.lightGrey};
+    padding: 20px 25px;
+    font-size: large;
 
     &:hover ${MenuItemSelectItems} {
+        display: block;
         visibility: visible;
         opacity: 1;
         animation: fade 1s;

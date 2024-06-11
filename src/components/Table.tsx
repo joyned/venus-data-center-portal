@@ -36,10 +36,10 @@ export const TableBody = styled.tbody`
 
 export const TableRow = styled.tr`
     &:nth-child(even) {
-        background-color: ${localStorage.getItem("theme") === "dark" ? color.lightGrey : "#f2f2f2"};
+        background-color: ${localStorage.getItem("theme") === "dark" ? color.darkGrey : "#f2f2f2"};
     }
     &:hover {
-        background-color: ${localStorage.getItem("theme") === "dark" ? color.lightGrey : "#f2f2f2"};
+        background-color: ${localStorage.getItem("theme") === "dark" ? color.darkGrey : "#f2f2f2"};
     }
 `;
 

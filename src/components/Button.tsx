@@ -1,11 +1,11 @@
 import { CSSProperties, ReactElement } from "react";
 import styled from "styled-components";
-import { color } from "./ui/variables";
+import { button, color } from "./ui/variables";
 
 const Btn = styled.button<{ $isTransparent?: boolean }>`
     background-color: ${props => props.$isTransparent ? 'transparent' : color.primary};
-    color: ${props => props.$isTransparent ? color.primary : 'white'};
-    border: 1px solid ${color.primary};
+    color: ${props => props.$isTransparent ? button.transparentColor : 'white'};
+    border: 1px solid ${button.transparentColor};
     border-radius: 5px;
     margin-right: 10px;
 `;

@@ -4,7 +4,7 @@ import { color, text } from "./ui/variables";
 const Ipt = styled.input`
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid grey;
+    border: 1px solid ${color.borderColor};
     margin-top: 7px;
     color: ${text.default};
     font-size: ${text.fontSize};

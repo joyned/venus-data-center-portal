@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { text } from "./ui/variables";
+import { color, text } from "./ui/variables";
 
 const TextAreaComponent = styled.textarea`
     padding: 10px;
-    border: 1px solid grey;
+    border: 1px solid ${color.borderColor};
     border-radius: 5px;
     font-size: 16px;
     color: ${text.default};

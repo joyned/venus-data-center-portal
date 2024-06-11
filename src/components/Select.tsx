@@ -1,10 +1,10 @@
 import { CSSProperties, useEffect, useState } from "react";
 import styled from "styled-components";
-import { text } from "./ui/variables";
+import { color, text } from "./ui/variables";
 
 const SelectComponent = styled.select`
     padding: 10px;
-    border: 1px solid grey;
+    border: 1px solid ${color.borderColor};
     border-radius: 5px;
     width: 100%;
     font-size: 16px;

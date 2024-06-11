@@ -2,14 +2,13 @@ import { ReactElement, useState } from "react";
 import { MdHelp } from "react-icons/md";
 import styled, { CSSProperties } from "styled-components";
 import Modal from "./Modal";
-import { color, panel, text } from "./ui/variables";
+import { panel, text } from "./ui/variables";
 
 const Pnl = styled.div`
     margin-bottom: 30px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid ${color.secondary};
-    box-shadow: 0px 1px 2px 0px #1018288a;
+    padding: 15px 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 2px ${panel.shadowColor};
     background-color: ${panel.backgroundColor};
     z-index: 1;
 `
