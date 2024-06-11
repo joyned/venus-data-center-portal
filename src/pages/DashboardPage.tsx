@@ -7,6 +7,7 @@ import { useLoading } from "../components/Loading";
 import Panel from "../components/Panel";
 import { Table, TableBody, TableCell, TableHead, TableRow, TableTh } from "../components/Table";
 import DashboardModel from "../models/DashboardModel";
+import { incrementPageCounter } from "../services/CookieService";
 import { findAllDashboard } from "../services/DashboardService";
 
 export default function DashboardPage() {
@@ -20,6 +21,12 @@ export default function DashboardPage() {
             setDashboards(data);
         }).finally(() => setLoading(false));
     }, [setLoading])
+
+    const openDashboard = (dashboard: DashboardModel) => {
+        const url = `/dashboard/view/${dashboard.id}`;
+        incrementPageCounter(url);
+        navigate(url);
+    }
 
     return (
         <Panel title="Dashboards" subtitle="List of all dashboards avaliable.">
@@ -39,7 +46,7 @@ export default function DashboardPage() {
                                     <TableCell><MdFavoriteBorder style={{ cursor: "pointer" }} /></TableCell>
                                     <TableCell>{dashboard.name}</TableCell>
                                     <TableCell>
-                                        <Button label="Open" onClick={() => navigate(`/dashboard/view/${dashboard.id}`)}></Button>
+                                        <Button label="Open" onClick={() => openDashboard(dashboard)}></Button>
                                         <Button label="Edit" onClick={() => navigate(`/dashboard/edit/${dashboard.id}`)}></Button>
                                         <ButtonConfirm label="Delete" transparent></ButtonConfirm>
                                     </TableCell>

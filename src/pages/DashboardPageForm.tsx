@@ -14,6 +14,7 @@ import DashboardModel from "../models/DashboardModel";
 import { findAllConnectors } from "../services/ConnectorService";
 import { findDashboardById, saveDashboard } from "../services/DashboardService";
 import MultipleInput from "../components/MultipleInput";
+import Span from "../components/RequiredLabel";
 
 export default function DashboardPageForm() {
     const params = useParams();
@@ -105,15 +106,15 @@ export default function DashboardPageForm() {
                 <Toast ref={toast}></Toast>
                 <form onSubmit={onSubmit}>
                     <FormItem>
-                        <span>Name</span>
-                        <Input type="text" value={name} onChange={(e) => setName(e.target.value)}></Input>
+                        <Span required>Name</Span>
+                        <Input required  type="text" value={name} onChange={(e) => setName(e.target.value)}></Input>
                     </FormItem>
                     <FormItem>
                         <span>Description</span>
                         <Input type="text" value={description} onChange={(e) => setDescription(e.target.value)}></Input>
                     </FormItem>
                     <FormItem>
-                        <span>Connector</span>
+                        <Span required>Connector</Span>
                         <Select options={connectorOptions} value={selectedConnector} onChange={(value: any) => {
                             setSelectedConnector(value)
                         }}></Select>

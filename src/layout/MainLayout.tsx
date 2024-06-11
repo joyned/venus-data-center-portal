@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { CiSettings, CiViewList } from "react-icons/ci";
 import { FaAngleRight } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Loading, { useLoading } from "../components/Loading";
 import { color } from "../components/ui/variables";
+import { getDashboardPagesFromCookiesWithMostAccessLimit3 } from "../services/CookieService";
 
 const MainLayoutContainer = styled.div`
     display: flex;
@@ -99,6 +100,12 @@ const MenuLogo = styled.div`
 export default function MainLayout(props: { children: ReactElement | ReactElement[] }) {
     const navigate = useNavigate();
     const { loading } = useLoading();
+    const [mostAccessedDashboards, setMostAccessedDashboards] = useState([]);
+
+    useEffect(() => {
+        const dash = getDashboardPagesFromCookiesWithMostAccessLimit3();
+        console.log(dash);
+    }, [])
 
     return (
         <Loading isLoading={loading}>

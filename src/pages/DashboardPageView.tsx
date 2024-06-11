@@ -31,13 +31,6 @@ export default function DashboardPageView() {
                 setDashboard(data);
                 const extratedFilters = extractParameters(data.query);
                 setFilters(extratedFilters)
-
-                if (data.connector.type === 'REST') {
-                    const extractedParameters = extractParameters(data.connector.url);
-                    setFilters([...filters, ...extractedParameters])
-                    extractedParameters.map((filter) => setParameters({ ...parameters, [filter.parameter]: "" }))
-                }
-
                 extratedFilters.map((filter) => setParameters({ ...parameters, [filter.parameter]: "" }))
                 setLoading(false);
             })

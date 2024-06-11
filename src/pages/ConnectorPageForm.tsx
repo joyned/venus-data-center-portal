@@ -14,6 +14,7 @@ import EngineModel from "../models/EngineModel";
 import { QueryTypeModel } from "../models/QueyrTypeModel";
 import { findConnectorById, saveConnector, testConnection } from "../services/ConnectorService";
 import { findAllEngines } from "../services/EngineService";
+import Span from "../components/RequiredLabel";
 
 const helpTemplate = () => {
     return (
@@ -233,15 +234,15 @@ export default function ConnectorPageForm() {
             <Toast ref={toastRef}></Toast>
             <form onSubmit={onSubmit}>
                 <FormItem>
-                    <span>Name</span>
+                    <Span required>Name</Span>
                     <Input type="text" value={name} onChange={(e) => setName(e.target.value)} required></Input>
                 </FormItem>
                 <FormItem>
-                    <span>Description</span>
+                    <Span>Description</Span>
                     <Input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required></Input>
                 </FormItem>
                 <FormItem>
-                    <span>Type</span>
+                    <Span required>Type</Span>
                     <Select options={options} value={selectedOption} optionLabel="label" style={{ marginBottom: '20px' }}
                         onChange={(value: any) => onQueryTypeSelect(value)}
                     ></Select>
@@ -249,31 +250,31 @@ export default function ConnectorPageForm() {
                 {selectedOption?.value === 'sql' ? (
                     <>
                         <FormItem>
-                            <span>Host</span>
+                            <Span required>Host</Span>
                             <Input type="text" value={dbHost} onChange={(e) => setDbHost(e.target.value)}></Input>
                         </FormItem>
                         <FormItem>
-                            <span>Port</span>
+                            <Span>Port</Span>
                             <Input type="number" value={dbPort} onChange={(e) => setDbPort(e.target.value)}></Input>
                         </FormItem>
                         <FormItem>
-                            <span>Database</span>
+                            <Span required>Database</Span>
                             <Input type="text" value={dbDatabase} onChange={(e) => setDbDatabase(e.target.value)}></Input>
                         </FormItem>
                         <FormItem>
-                            <span>User</span>
+                            <Span required>User</Span>
                             <Input type="text" value={dbUser} onChange={(e) => setDbUser(e.target.value)}></Input>
                         </FormItem>
                         <FormItem>
-                            <span>Password</span>
+                            <Span required>Password</Span>
                             <Input type="password" value={dbPassword} onChange={(e) => setDbPassword(e.target.value)}></Input>
                         </FormItem>
                         <FormItem>
-                            <span>Engine</span>
+                            <Span required>Engine</Span>
                             <Select options={databaseOptions} value={dbEngine} optionLabel="name" onChange={(e) => setDbEngine(e)}></Select>
                         </FormItem>
                         <FormItem>
-                            <span>Test Query</span>
+                            <Span required>Test Query</Span>
                             <TextArea value={dbTestConnection} onChange={(e) => setDbTestConnection(e.target.value)}></TextArea>
                         </FormItem>
                         <Button type="button" label="Test Connection" onClick={() => onTestConnection()}></Button>
@@ -282,15 +283,15 @@ export default function ConnectorPageForm() {
                 {selectedOption?.value === 'rest' ? (
                     <>
                         <FormItem>
-                            <span>URL</span>
+                            <Span required>URL</Span>
                             <Input type="text" value={restUrl} onChange={(e) => setRestUrl(e.target.value)}></Input>
                         </FormItem>
                         <FormItem>
-                            <span>Method</span>
+                            <Span required>Method</Span>
                             <Select options={httpMethods} value={restMethod} onChange={(e) => setRestMethod(e)}></Select>
                         </FormItem>
                         <FormItem>
-                            <span>Headers</span>
+                            <Span>Headers</Span>
                             <TextArea value={restHeaders} onChange={(e) => setRestHeaders(e.target.value)}></TextArea>
                         </FormItem>
                     </>
