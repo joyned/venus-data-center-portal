@@ -1,12 +1,13 @@
 import styled from "styled-components";
+import { text } from "./ui/variables";
 
 const TextAreaComponent = styled.textarea`
     padding: 10px;
     border: 1px solid grey;
     border-radius: 5px;
     font-size: 16px;
-    color: #333;
-    background-color: #fff;
+    color: ${text.default};
+    background-color: transparent;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
     transition: box-shadow 0.3s, border 0.3s;
     &:focus {

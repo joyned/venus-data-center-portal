@@ -16,6 +16,26 @@ import { findDashboardById, saveDashboard } from "../services/DashboardService";
 import MultipleInput from "../components/MultipleInput";
 import Span from "../components/RequiredLabel";
 
+const helpTemplate = () => {
+    return (
+        <>
+            <p>This article helps you creating your dashboard.</p>
+            <p><strong>For SQL Connector:</strong></p>
+            <span>
+                For parameters, use dollar symbol ($) to idenfity a parameter.
+                All parameters will be converted to a filter.
+            </span>
+            <p><strong>For REST Connector:</strong></p>
+            <span>
+                If your request is a POST request, fill the QUERY with the request body.
+                Else, if you already identify the parameters on the connector for path parameters or query parameters, you don't need to do anything.
+                For parameters, use dollar symbol ($) to idenfity a parameter.
+                All parameters will be converted to a filter.
+            </span>
+        </>
+    )
+}
+
 export default function DashboardPageForm() {
     const params = useParams();
     const toast = useRef<any>(null);
@@ -53,7 +73,7 @@ export default function DashboardPageForm() {
 
     const onSubmit = (e: any) => {
         e.preventDefault();
-
+        setLoading(true);
         let dashboard: DashboardModel = {
             id: dashboardId,
             name: name,
@@ -62,33 +82,12 @@ export default function DashboardPageForm() {
             query: queryText
         }
 
-        console.log(dashboard);
         saveDashboard(dashboard).then(() => {
             toast.current?.showSuccess('Success', 'Dashboard saved');
             navigate('/dashboard');
         }).catch((error) => {
             toast.current?.showError('Error', error.data.message);
-        });
-    }
-
-    const helpTemplate = () => {
-        return (
-            <>
-                <p>This article helps you creating your dashboard.</p>
-                <p><strong>For SQL Connector:</strong></p>
-                <span>
-                    For parameters, use dollar symbol ($) to idenfity a parameter.
-                    All parameters will be converted to a filter.
-                </span>
-                <p><strong>For REST Connector:</strong></p>
-                <span>
-                    If your request is a POST request, fill the QUERY with the request body.
-                    Else, if you already identify the parameters on the connector for path parameters or query parameters, you don't need to do anything.
-                    For parameters, use dollar symbol ($) to idenfity a parameter.
-                    All parameters will be converted to a filter.
-                </span>
-            </>
-        )
+        }).finally(() => setLoading(false));
     }
 
     const handleCancelYes = (e: any) => {
@@ -107,7 +106,7 @@ export default function DashboardPageForm() {
                 <form onSubmit={onSubmit}>
                     <FormItem>
                         <Span required>Name</Span>
-                        <Input required  type="text" value={name} onChange={(e) => setName(e.target.value)}></Input>
+                        <Input required type="text" value={name} onChange={(e) => setName(e.target.value)}></Input>
                     </FormItem>
                     <FormItem>
                         <span>Description</span>
@@ -123,7 +122,7 @@ export default function DashboardPageForm() {
                         <span>Query</span>
                         <TextArea value={queryText} onChange={(e) => setQueryText(e.target.value)}></TextArea>
                     </FormItem>
-                    <Button type="button" label="Save"></Button>
+                    <Button label="Save"></Button>
                     <ButtonConfirm label="Cancel" callback={handleCancelYes} transparent></ButtonConfirm>
                 </form>
             </Panel>

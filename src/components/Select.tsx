@@ -1,5 +1,6 @@
 import { CSSProperties, useEffect, useState } from "react";
 import styled from "styled-components";
+import { text } from "./ui/variables";
 
 const SelectComponent = styled.select`
     padding: 10px;
@@ -7,8 +8,8 @@ const SelectComponent = styled.select`
     border-radius: 5px;
     width: 100%;
     font-size: 16px;
-    color: #333;
-    background-color: #fff;
+    color: ${text.default};
+    background-color: transparent;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
     transition: box-shadow 0.3s, border 0.3s;
     &:focus {

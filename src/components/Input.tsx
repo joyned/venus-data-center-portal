@@ -8,6 +8,7 @@ const Ipt = styled.input`
     margin-top: 7px;
     color: ${text.default};
     font-size: ${text.fontSize};
+    background-color: transparent;
 
     ::placeholder {
         color: ${text.placeholder};

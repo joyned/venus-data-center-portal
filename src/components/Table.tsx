@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { color, text } from "./ui/variables";
 
 export const Table = styled.table`
     width: 100%;
@@ -10,7 +11,7 @@ export const Table = styled.table`
 export const TableHead = styled.thead`
     border-bottom: 1px solid #ddd;
     font-size: 18px;
-    color: #333;
+    color: ${text.default};
     font-weight: bold;
     text-align: left;
     padding: 10px;
@@ -20,7 +21,7 @@ export const TableTh = styled.th`
     padding: 10px;
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
-    color: #333;
+    color: ${text.default};
     font-weight: bold;
     text-align: left;
     font-size: 18px;
@@ -28,17 +29,17 @@ export const TableTh = styled.th`
 
 export const TableBody = styled.tbody`
     font-size: 16px;
-    color: #333;
+    color: ${text.default};
     padding: 10px;
     border-bottom: 1px solid #ddd;
 `;
 
 export const TableRow = styled.tr`
     &:nth-child(even) {
-        background-color: #f2f2f2;
+        background-color: ${localStorage.getItem("theme") === "dark" ? color.primary : "#f2f2f2"};
     }
     &:hover {
-        background-color: #ddd;
+        background-color: ${localStorage.getItem("theme") === "dark" ? color.primary : "#f2f2f2"};
     }
 `;
 
@@ -47,7 +48,7 @@ export const TableCell = styled.td`
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     font-size: 16px;
-    color: #333;
+    color: ${text.default};
     text-align: left;
     &:last-child {
         border-right: none;

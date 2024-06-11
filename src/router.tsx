@@ -2,11 +2,12 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "./layout/MainLayout";
 import ConnectorPage from "./pages/ConnectorPage";
 import ConnectorPageForm from "./pages/ConnectorPageForm";
+import DashboardPage from "./pages/DashboardPage";
 import DashboardPageForm from "./pages/DashboardPageForm";
+import DashboardPageView from "./pages/DashboardPageView";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
-import DashboardPageView from "./pages/DashboardPageView";
+import UserPage from "./pages/UserPage";
 
 export const router = createBrowserRouter([
     {
@@ -36,5 +37,9 @@ export const router = createBrowserRouter([
     {
         path: "/dashboard/edit/:id",
         element: <MainLayout><DashboardPageForm /></MainLayout>
+    },
+    {
+        path: "/user",
+        element: <MainLayout><UserPage /></MainLayout>
     }
 ]);

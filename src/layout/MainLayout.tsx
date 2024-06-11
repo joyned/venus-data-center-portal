@@ -14,6 +14,13 @@ import { getDashboardPagesFromCookiesWithMostAccessLimit3 } from "../services/Co
 const MainLayoutContainer = styled.div`
     display: flex;
     flex-direction: row;
+    display: flex;
+    flex-direction: row;
+    background-image: ${localStorage.getItem('theme') === 'dark' ? 'url("/login-background-invert.png")' : 'url("/login-background.svg")'};
+    background-position: center center;
+    background-size: 100%;
+    min-width: 100vw;
+    min-height: 100vh;
 `
 
 const Menu = styled.div`
@@ -107,6 +114,17 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
         console.log(dash);
     }, [])
 
+    const changeTheme = (e: any) => {
+        e.preventDefault();
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark') {
+            localStorage.setItem('theme', 'light');
+        } else {
+            localStorage.setItem('theme', 'dark');
+        }
+        window.location.reload();
+    }
+
     return (
         <Loading isLoading={loading}>
             <MainLayoutContainer>
@@ -164,7 +182,7 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
                                             Connector
                                         </MenuItemText>
                                     </MenuItemSelectItemsItem>
-                                    <MenuItemSelectItemsItem onClick={() => navigate('/users')}>
+                                    <MenuItemSelectItemsItem onClick={() => navigate('/user')}>
                                         <MenuItemText>
                                             <FiUsers />
                                             Users
@@ -176,7 +194,7 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
                     </MenuNav>
                 </Menu>
                 <TopMenu>
-                    <MenuItem>Logout</MenuItem>
+                    <MenuItem onClick={changeTheme}>Change Theme</MenuItem>
                 </TopMenu>
                 <PageContainer>
                     {props.children}

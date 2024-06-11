@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
@@ -8,10 +8,12 @@ import Panel from "../components/Panel";
 import { Table, TableBody, TableCell, TableHead, TableRow, TableTh } from "../components/Table";
 import DashboardModel from "../models/DashboardModel";
 import { incrementPageCounter } from "../services/CookieService";
-import { findAllDashboard } from "../services/DashboardService";
+import { deleteDashboard, findAllDashboard } from "../services/DashboardService";
+import Toast from "../components/Toast";
 
 export default function DashboardPage() {
     const navigate = useNavigate();
+    const toast = useRef<any>(null);
     const { setLoading } = useLoading();
     const [dashboards, setDashboards] = useState<DashboardModel[]>([]);
 
@@ -28,8 +30,21 @@ export default function DashboardPage() {
         navigate(url);
     }
 
+    const handleDelete = (dashboard: DashboardModel) => {
+        if (dashboard.id) {
+            setLoading(true);
+            deleteDashboard(dashboard.id).then(() => {
+                setDashboards(dashboards.filter(d => d.id !== dashboard.id));
+                toast.current.show('Success', 'Dashboard deleted successfully.');
+            }).catch(() => {
+                toast.current.show('Error', 'Error deleting dashboard.', 'error');
+            }).finally(() => setLoading(false));
+        }
+    }
+
     return (
         <Panel title="Dashboards" subtitle="List of all dashboards avaliable.">
+            <Toast ref={toast}></Toast>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -48,7 +63,7 @@ export default function DashboardPage() {
                                     <TableCell>
                                         <Button label="Open" onClick={() => openDashboard(dashboard)}></Button>
                                         <Button label="Edit" onClick={() => navigate(`/dashboard/edit/${dashboard.id}`)}></Button>
-                                        <ButtonConfirm label="Delete" transparent></ButtonConfirm>
+                                        <ButtonConfirm label="Delete" callback={() => handleDelete(dashboard)} transparent></ButtonConfirm>
                                     </TableCell>
                                 </TableRow>
                             )
