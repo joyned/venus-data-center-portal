@@ -1,15 +1,10 @@
 import { ReactElement, useEffect, useState } from "react";
-import { CiSettings, CiViewList } from "react-icons/ci";
-import { FaAngleDown, FaUserCircle } from "react-icons/fa";
-import { FiUsers } from "react-icons/fi";
-import { IoHomeOutline } from "react-icons/io5";
-import { MdConnectedTv, MdOutlineCreateNewFolder, MdOutlineDashboard } from "react-icons/md";
-import { TbLayoutDashboard } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Input from "../components/Input";
 import Loading, { useLoading } from "../components/Loading";
-import { body, menu, mobile } from "../components/ui/variables";
+import Menu from "../components/Menu";
+import { body, mobile } from "../components/ui/variables";
+import MenuItem from "../models/MenuItem";
 import { getDashboardPagesFromCookiesWithMostAccessLimit3 } from "../services/CookieService";
 
 const MainLayoutContainer = styled.div`
@@ -20,159 +15,51 @@ const MainLayoutContainer = styled.div`
     min-height: 100vh;
 `
 
-const Menu = styled.div<{ hovered?: boolean }>`
-    position: fixed;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    margin-top: 40px;
-    height: 100vh;
-    width: 235px;
-    background-color: ${body.leftMenu};
-    box-shadow: 4px -2px 12px 2px #dddddd8a;
-
-    @media (max-width: ${mobile.starts}) {
-        display: none;
-    }
-
-    ${props => props.hovered && `
-        @media (max-width: ${mobile.starts}) {
-            display: flex;
-        }
-    `}
-`;
-
-const MenuNav = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-`
-
-const TopMenu = styled.div`
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: ${body.topMenu};
-    box-shadow: 4px -2px 12px 2px #dddddd8a;
-    width: 100%;
-    padding: 10px 25px;
-    z-index: 9999;
-`
-
-const MenuItemSelect = styled.div`
-    max-height: fit-content;
-`;
-
-const MenuItemSelectItems = styled(MenuItemSelect)`
-    background-color: ${body.leftMenu};
-    min-width: 160px;
-    margin-top: 15px;
-    visibility: hidden;
-    opacity: 0;
-    max-height: 0;
-    -webkit-transition: opacity 600ms, visibility 600ms;
-            transition: opacity 600ms, visibility 600ms;
-`;
-
-const MenuItemSelectItemsItem = styled.div`
-    color: ${body.leftMenuText};
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    cursor: pointer;
-
-`
-
-const MenuItem = styled.div`
-    color: ${body.leftMenuText};
-    cursor: pointer;
-    padding: 20px 25px;
-    font-size: large;
-
-    &:hover ${MenuItemSelectItems} {
-        display: block;
-        visibility: visible;
-        opacity: 1;
-        animation: fade 1s;
-        max-height: 1000px;
-    }
-`
-
-const MenuItemText = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    font-weight: 400;
-`
-
 const PageContainer = styled.div`
     padding: 20px;
-    margin-left: 240px;
     margin-top: 70px;
     width: 100%;
 
     @media (max-width: ${mobile.starts}) {
         padding: 10px;
-        margin-left: 0;
     }
 `;
 
-const MenuLogo = styled.div`
-    width: 100%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-
-    img {
-        width: 40px;
+const menu: MenuItem[] = [
+    {
+        name: 'Home',
+        url: '/home'
+    },
+    {
+        name: 'Dashboard',
+        subMenu: [
+            {
+                name: 'View All',
+                url: '/dashboard'
+            },
+            {
+                name: 'Create',
+                url: '/dashboard/edit/0'
+            }
+        ]
+    },
+    {
+        name: 'Settings',
+        subMenu: [
+            {
+                name: 'Connector',
+                url: '/connector'
+            },
+            {
+                name: 'Users',
+                url: '/user'
+            }
+        ]
     }
-
-    span {
-        font-size: medium;
-        font-weight: 300;
-        color: ${menu.textColor};
-    }
-`
-
-const LeftItem = styled.div`
-    margin-left: 15px;
-`;
-const RightItem = styled.div`
-    display: flex;
-    margin-right: 15px;
-    align-items: center;
-    gap: 10px;
-
-    svg {
-        cursor: pointer;
-        font-size: x-large;
-        color: white;
-    }
-
-    input {
-        margin: 0;
-        padding: 7px;
-        font-size: small;
-        color: white;
-    }
-
-    @media (max-width: ${mobile.starts}) {
-        input {
-            display: none;
-        }
-
-        &:hover ${MainLayoutContainer} ${Menu} {
-            display: block;
-        }
-    }
-`;
+]
 
 export default function MainLayout(props: { children: ReactElement | ReactElement[] }) {
-    const navigate = useNavigate();
     const { loading } = useLoading();
-    const [menuHovered, setMenuHovered] = useState(false);
 
     useEffect(() => {
         const dash = getDashboardPagesFromCookiesWithMostAccessLimit3();
@@ -181,80 +68,7 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
     return (
         <Loading isLoading={loading}>
             <MainLayoutContainer>
-                <Menu hovered={menuHovered}>
-                    <MenuNav>
-                        <MenuItem>
-                            <MenuItemText onClick={() => navigate('/home')}>
-                                <IoHomeOutline />
-                                Home
-                            </MenuItemText>
-                        </MenuItem>
-                        <MenuItem>
-                            <MenuItemText>
-                                <MdOutlineDashboard />
-                                Dashboards
-                                <FaAngleDown />
-                            </MenuItemText>
-                            <MenuItemSelect>
-                                <MenuItemSelectItems>
-                                    <MenuItemSelectItemsItem onClick={() => navigate('/dashboard/view/0')}>
-                                        <MenuItemText>
-                                            <TbLayoutDashboard />
-                                            Dashboard 1
-                                        </MenuItemText>
-                                    </MenuItemSelectItemsItem>
-                                    <MenuItemSelectItemsItem onClick={() => navigate('/dashboard')}>
-                                        <MenuItemText>
-                                            <CiViewList />
-                                            View All
-                                        </MenuItemText>
-                                    </MenuItemSelectItemsItem>
-                                    <MenuItemSelectItemsItem onClick={() => navigate('/dashboard/edit/0')}>
-                                        <MenuItemText>
-                                            <MdOutlineCreateNewFolder />
-                                            Create
-                                        </MenuItemText>
-                                    </MenuItemSelectItemsItem>
-                                </MenuItemSelectItems>
-                            </MenuItemSelect>
-                        </MenuItem>
-                        <MenuItem>
-                            <MenuItemText>
-                                <CiSettings />
-                                Settings
-                                <FaAngleDown />
-                            </MenuItemText>
-                            <MenuItemSelect>
-                                <MenuItemSelectItems>
-                                    <MenuItemSelectItemsItem onClick={() => navigate('/connector')}>
-                                        <MenuItemText>
-                                            <MdConnectedTv />
-                                            Connector
-                                        </MenuItemText>
-                                    </MenuItemSelectItemsItem>
-                                    <MenuItemSelectItemsItem onClick={() => navigate('/user')}>
-                                        <MenuItemText>
-                                            <FiUsers />
-                                            Users
-                                        </MenuItemText>
-                                    </MenuItemSelectItemsItem>
-                                </MenuItemSelectItems>
-                            </MenuItemSelect>
-                        </MenuItem>
-                    </MenuNav>
-                </Menu>
-                <TopMenu>
-                    <LeftItem onMouseEnter={() => setMenuHovered(!menuHovered)} >
-                        <MenuLogo>
-                            <img src="/logo512.png" alt="" />
-                            <span>Venus Data Center</span>
-                        </MenuLogo>
-                    </LeftItem>
-                    <RightItem>
-                        <Input type="text" placeholder="Search"></Input>
-                        <FaUserCircle></FaUserCircle>
-                    </RightItem>
-                </TopMenu>
+                <Menu items={menu}></Menu>
                 <PageContainer>
                     {props.children}
                 </PageContainer>
