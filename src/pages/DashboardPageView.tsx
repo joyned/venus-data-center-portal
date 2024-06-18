@@ -5,7 +5,7 @@ import FormItem from "../components/FormItem";
 import Input from "../components/Input";
 import { useLoading } from "../components/Loading";
 import Panel from "../components/Panel";
-import { Table, TableBody, TableCell, TableHead, TableRow, TableTh } from "../components/Table";
+import { ResponsiveTable, Table, TableBody, TableCell, TableHead, TableRow, TableTh } from "../components/Table";
 import Toast from "../components/Toast";
 import DashboardModel from "../models/DashboardModel";
 import { executeDashboard } from "../services/DashboardExecutionService";
@@ -87,30 +87,32 @@ export default function DashboardPageView() {
                 </form>
             </Panel>
             <Panel title={dashboard?.name}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            {result.length > 0 && Object.keys(result[0]).map((key) => {
-                                return <TableTh key={key}>{key}</TableTh>
-                            })}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {result && result.map((row, index) => {
-                            return (
-                                <TableRow key={index}>
-                                    {Object.keys(row).map((key) => {
-                                        return <TableCell key={key}>{row[key]}</TableCell>
-                                    })}
-                                </TableRow>
-                            )
-                        })}
-                        {noData &&
+            <ResponsiveTable>
+                    <Table>
+                        <TableHead>
                             <TableRow>
-                                <TableCell colSpan={result.length > 0 ? Object.keys(result[0]).length : 1}>No data found</TableCell>
-                            </TableRow>}
-                    </TableBody>
-                </Table>
+                                {result.length > 0 && Object.keys(result[0]).map((key) => {
+                                    return <TableTh key={key}>{key}</TableTh>
+                                })}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {result && result.map((row, index) => {
+                                return (
+                                    <TableRow key={index}>
+                                        {Object.keys(row).map((key) => {
+                                            return <TableCell key={key}>{row[key]}</TableCell>
+                                        })}
+                                    </TableRow>
+                                )
+                            })}
+                            {noData &&
+                                <TableRow>
+                                    <TableCell colSpan={result.length > 0 ? Object.keys(result[0]).length : 1}>No data found</TableCell>
+                                </TableRow>}
+                        </TableBody>
+                    </Table>
+            </ResponsiveTable>
             </Panel>
         </>
     )

@@ -1,36 +1,45 @@
 import { ReactElement, useEffect, useState } from "react";
-import { CiDark, CiSettings, CiViewList } from "react-icons/ci";
+import { CiSettings, CiViewList } from "react-icons/ci";
 import { FaAngleDown, FaUserCircle } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
 import { IoHomeOutline } from "react-icons/io5";
-import { MdConnectedTv, MdDarkMode, MdOutlineCreateNewFolder, MdOutlineDashboard } from "react-icons/md";
+import { MdConnectedTv, MdOutlineCreateNewFolder, MdOutlineDashboard } from "react-icons/md";
 import { TbLayoutDashboard } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Input from "../components/Input";
 import Loading, { useLoading } from "../components/Loading";
-import { color, container, menu } from "../components/ui/variables";
+import { body, menu, mobile } from "../components/ui/variables";
 import { getDashboardPagesFromCookiesWithMostAccessLimit3 } from "../services/CookieService";
 
 const MainLayoutContainer = styled.div`
     display: flex;
-    flex-direction: row;
-    display: flex;
-    flex-direction: row;
-    background-color: ${container.backgroundColor};
+    justify-content: center;
+    background-color: ${body.backgroundColorLight};
     min-width: 100vw;
     min-height: 100vh;
 `
 
-const Menu = styled.div`
+const Menu = styled.div<{ hovered?: boolean }>`
     position: fixed;
+    left: 0;
     display: flex;
     flex-direction: column;
     margin-top: 40px;
     height: 100vh;
     width: 235px;
-    background-color: ${menu.left};
-    border-right: 1px solid ${color.borderColor};
+    background-color: ${body.leftMenu};
+    box-shadow: 4px -2px 12px 2px #dddddd8a;
+
+    @media (max-width: ${mobile.starts}) {
+        display: none;
+    }
+
+    ${props => props.hovered && `
+        @media (max-width: ${mobile.starts}) {
+            display: flex;
+        }
+    `}
 `;
 
 const MenuNav = styled.div`
@@ -44,10 +53,11 @@ const TopMenu = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: ${menu.top};
-    border-bottom: 1px solid ${color.borderColor};
+    background-color: ${body.topMenu};
+    box-shadow: 4px -2px 12px 2px #dddddd8a;
     width: 100%;
     padding: 10px 25px;
+    z-index: 9999;
 `
 
 const MenuItemSelect = styled.div`
@@ -55,7 +65,7 @@ const MenuItemSelect = styled.div`
 `;
 
 const MenuItemSelectItems = styled(MenuItemSelect)`
-    background-color: ${menu.left};
+    background-color: ${body.leftMenu};
     min-width: 160px;
     margin-top: 15px;
     visibility: hidden;
@@ -66,7 +76,7 @@ const MenuItemSelectItems = styled(MenuItemSelect)`
 `;
 
 const MenuItemSelectItemsItem = styled.div`
-    color: ${menu.textColor};
+    color: ${body.leftMenuText};
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -75,7 +85,7 @@ const MenuItemSelectItemsItem = styled.div`
 `
 
 const MenuItem = styled.div`
-    color: ${menu.textColor};
+    color: ${body.leftMenuText};
     cursor: pointer;
     padding: 20px 25px;
     font-size: large;
@@ -101,6 +111,11 @@ const PageContainer = styled.div`
     margin-left: 240px;
     margin-top: 70px;
     width: 100%;
+
+    @media (max-width: ${mobile.starts}) {
+        padding: 10px;
+        margin-left: 0;
+    }
 `;
 
 const MenuLogo = styled.div`
@@ -121,53 +136,52 @@ const MenuLogo = styled.div`
     }
 `
 
-const LeftItem = styled.div``;
+const LeftItem = styled.div`
+    margin-left: 15px;
+`;
 const RightItem = styled.div`
-    margin-right: 60px;
     display: flex;
+    margin-right: 15px;
     align-items: center;
     gap: 10px;
 
     svg {
         cursor: pointer;
         font-size: x-large;
-        color: ${menu.textColor};
+        color: white;
     }
 
     input {
         margin: 0;
         padding: 7px;
         font-size: small;
+        color: white;
+    }
+
+    @media (max-width: ${mobile.starts}) {
+        input {
+            display: none;
+        }
+
+        &:hover ${MainLayoutContainer} ${Menu} {
+            display: block;
+        }
     }
 `;
 
 export default function MainLayout(props: { children: ReactElement | ReactElement[] }) {
     const navigate = useNavigate();
     const { loading } = useLoading();
-    const [actualTheme, setActualTheme] = useState(localStorage.getItem('theme'));
+    const [menuHovered, setMenuHovered] = useState(false);
 
     useEffect(() => {
         const dash = getDashboardPagesFromCookiesWithMostAccessLimit3();
-        console.log(dash);
     }, [])
-
-    const changeTheme = (e: any) => {
-        e.preventDefault();
-        const theme = localStorage.getItem('theme');
-        if (theme === 'dark') {
-            localStorage.setItem('theme', 'light');
-        } else {
-            localStorage.setItem('theme', 'dark');
-        }
-
-        setActualTheme(localStorage.getItem('theme'));
-        window.location.reload();
-    }
 
     return (
         <Loading isLoading={loading}>
             <MainLayoutContainer>
-                <Menu>
+                <Menu hovered={menuHovered}>
                     <MenuNav>
                         <MenuItem>
                             <MenuItemText onClick={() => navigate('/home')}>
@@ -230,7 +244,7 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
                     </MenuNav>
                 </Menu>
                 <TopMenu>
-                    <LeftItem>
+                    <LeftItem onMouseEnter={() => setMenuHovered(!menuHovered)} >
                         <MenuLogo>
                             <img src="/logo512.png" alt="" />
                             <span>Venus Data Center</span>
@@ -238,7 +252,6 @@ export default function MainLayout(props: { children: ReactElement | ReactElemen
                     </LeftItem>
                     <RightItem>
                         <Input type="text" placeholder="Search"></Input>
-                        {actualTheme === 'dark' ? <MdDarkMode onClick={changeTheme} /> : <CiDark onClick={changeTheme} />}
                         <FaUserCircle></FaUserCircle>
                     </RightItem>
                 </TopMenu>

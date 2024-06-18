@@ -67,8 +67,8 @@ export default function DashboardPageForm() {
                     setSelectedConnector(data.connector);
                 }).finally(() => setLoading(false));
             }
+            setLoading(false)
         });
-
     }, [params.id, setLoading])
 
     const onSubmit = (e: any) => {
@@ -101,7 +101,7 @@ export default function DashboardPageForm() {
 
     return (
         <>
-            <Panel title={dashboardId ? 'Existing' : 'New Dashboard'} help={helpTemplate}>
+            <Panel title={dashboardId ? name : 'New Dashboard'} help={helpTemplate}>
                 <Toast ref={toast}></Toast>
                 <form onSubmit={onSubmit}>
                     <FormItem>

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 import { useLoading } from "../components/Loading";
 import Panel from "../components/Panel";
+import { ResponsiveTable, Table, TableBody, TableCell, TableHead, TableRow, TableTh } from "../components/Table";
 import UserModel from "../models/UserModel";
-import { useNavigate } from "react-router-dom";
-import { Table, TableBody, TableCell, TableHead, TableRow, TableTh } from "../components/Table";
-import Button from "../components/Button";
 
 const dummyUsers: UserModel[] = [
     {
@@ -37,28 +37,30 @@ export default function UserPage() {
     return (
         <Panel title="Users">
             <span>Manage your users.</span>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableTh>User Name</TableTh>
-                        <TableTh>Actions</TableTh>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {users && (
-                        users.map((user) => {
-                            return (
-                                <TableRow key={user.id}>
-                                    <TableCell>{user.name}</TableCell>
-                                    <TableCell>
-                                        <Button label="Edit" onClick={() => navigate(`/user/edit/${user.id}`)}></Button>
-                                    </TableCell>
-                                </TableRow>
-                            )
-                        })
-                    )}
-                </TableBody>
-            </Table>
+            <ResponsiveTable>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableTh>User Name</TableTh>
+                            <TableTh>Actions</TableTh>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {users && (
+                            users.map((user) => {
+                                return (
+                                    <TableRow key={user.id}>
+                                        <TableCell>{user.name}</TableCell>
+                                        <TableCell>
+                                            <Button label="Edit" onClick={() => navigate(`/user/edit/${user.id}`)}></Button>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })
+                        )}
+                    </TableBody>
+                </Table>
+            </ResponsiveTable>
             <Button label="Add User"></Button>
         </Panel>
     )

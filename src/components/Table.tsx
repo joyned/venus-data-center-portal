@@ -1,11 +1,14 @@
 import styled from "styled-components";
-import { color, text } from "./ui/variables";
+import { body, text } from "./ui/variables";
+
+export const ResponsiveTable = styled.div`
+    overflow-x:auto;
+`
 
 export const Table = styled.table`
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-
 `;
 
 export const TableHead = styled.thead`
@@ -36,10 +39,10 @@ export const TableBody = styled.tbody`
 
 export const TableRow = styled.tr`
     &:nth-child(even) {
-        background-color: ${localStorage.getItem("theme") === "dark" ? color.darkGrey : "#f2f2f2"};
+        background-color: ${body.backgroundColorLight}
     }
     &:hover {
-        background-color: ${localStorage.getItem("theme") === "dark" ? color.darkGrey : "#f2f2f2"};
+        background-color:${body.backgroundColorLight}
     }
 `;
 

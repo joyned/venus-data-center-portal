@@ -4,7 +4,7 @@ import Button from "../components/Button";
 import ButtonConfirm from "../components/ButtonConfirm";
 import { useLoading } from "../components/Loading";
 import Panel from "../components/Panel";
-import { Table, TableBody, TableCell, TableHead, TableRow, TableTh } from "../components/Table";
+import { ResponsiveTable, Table, TableBody, TableCell, TableHead, TableRow, TableTh } from "../components/Table";
 import Toast from "../components/Toast";
 import ConnectorModel from "../models/ConnectorModel";
 import { deleteConnector, findAllConnectors } from "../services/ConnectorService";
@@ -42,31 +42,33 @@ export default function ConnectorPage() {
     return (
         <Panel title="Connector" subtitle="Connectors are used to handle data extraction.">
             <Toast ref={toast}></Toast>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableTh>Connector Name</TableTh>
-                        <TableTh>Connector Type</TableTh>
-                        <TableTh>Actions</TableTh>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {connectors && connectors.map((connector) => {
-                        return (
-                            <TableRow key={connector.id}>
-                                <TableCell>{connector.name}</TableCell>
-                                <TableCell>{connector.type}</TableCell>
-                                <TableCell>
-                                    <Button label="Edit" onClick={() => navigate(`/connector/${connector.id}`)}></Button>
-                                    <ButtonConfirm confirmText={getConfirmText(connector)} confirmTitle={connector.name}
-                                        callback={() => { confirmDeleteConnector(connector) }} label="Delete" transparent
-                                    ></ButtonConfirm>
-                                </TableCell>
-                            </TableRow>
-                        )
-                    })}
-                </TableBody>
-            </Table>
+            <ResponsiveTable>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableTh>Connector Name</TableTh>
+                            <TableTh>Connector Type</TableTh>
+                            <TableTh>Actions</TableTh>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {connectors && connectors.map((connector) => {
+                            return (
+                                <TableRow key={connector.id}>
+                                    <TableCell>{connector.name}</TableCell>
+                                    <TableCell>{connector.type}</TableCell>
+                                    <TableCell>
+                                        <Button label="Edit" onClick={() => navigate(`/connector/${connector.id}`)}></Button>
+                                        <ButtonConfirm confirmText={getConfirmText(connector)} confirmTitle={connector.name}
+                                            callback={() => { confirmDeleteConnector(connector) }} label="Delete" transparent
+                                        ></ButtonConfirm>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })}
+                    </TableBody>
+                </Table>
+            </ResponsiveTable>
             <Button label="Add Connector" onClick={() => navigate('/connector/0')}></Button>
         </Panel>
     )

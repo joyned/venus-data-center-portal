@@ -1,6 +1,6 @@
 import { CSSProperties, ReactElement } from "react";
 import styled from "styled-components";
-import { button, color } from "./ui/variables";
+import { button, color, mobile } from "./ui/variables";
 
 const Btn = styled.button<{ $isTransparent?: boolean }>`
     background-color: ${props => props.$isTransparent ? 'transparent' : color.primary};
@@ -17,6 +17,11 @@ const BtnLabel = styled.div`
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
+
+    @media (max-width: ${mobile.starts}) {
+        padding: 13px 3px;
+        font-size: 13px;
+    }
 `
 
 const BtnIcon = styled.div`
