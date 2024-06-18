@@ -61,7 +61,7 @@ export default function DashboardPage() {
                                     <TableRow key={dashboard.id}>
                                         <TableCell><MdFavoriteBorder style={{ cursor: "pointer" }} /></TableCell>
                                         <TableCell>{dashboard.name}</TableCell>
-                                        <TableCell>
+                                        <TableCell style={{display: 'flex'}}>
                                             <Button label="Open" onClick={() => openDashboard(dashboard)}></Button>
                                             <Button label="Edit" onClick={() => navigate(`/dashboard/edit/${dashboard.id}`)}></Button>
                                             <ButtonConfirm label="Delete" callback={() => handleDelete(dashboard)} transparent></ButtonConfirm>

@@ -10,7 +10,7 @@ export default function HomePage() {
     const [connectors, setConnectors] = useState<string[]>([]);
 
     return (
-        <Grid minMax="600px">
+        <Grid minMax="calc(100% / 3)">
             <Panel title="Last Access">
                 <ResponsiveTable>
                     <Table>

@@ -7,15 +7,11 @@ const LoadingPanel = styled.div`
     background: #0000004f;
     width: 100vw;
     height: 100vh;
-    top: 0;
-    left: 0;
     z-index: 999;
+
 `
 
 const LoadingSpinner = styled.div`
-    position: relative;
-    top: 40%;
-    left: 50%;
     z-index: 9999999;
     border: 16px solid #f3f3f3;
     border-radius: 50%;
@@ -24,6 +20,12 @@ const LoadingSpinner = styled.div`
     height: 120px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -60px;
+    margin-left: -60px;
+
 
     @keyframes spin {
         0% { transform: rotate(0deg); }
@@ -56,8 +58,8 @@ export function useLoading() {
 
 export default function Loading(props: { isLoading?: boolean, children?: ReactElement[] | ReactElement }) {
     return (
-        <div>
-            <LoadingPanel style={{ display: props.isLoading ? 'block' : 'none' }}>
+        <div style={{position: 'relative'}}>
+            <LoadingPanel style={{ display: props.isLoading ? 'flex' : 'none' }}>
                 <LoadingSpinner></LoadingSpinner>
             </LoadingPanel>
             {props.children}

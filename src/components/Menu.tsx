@@ -1,8 +1,9 @@
 import { FaAngleDown, FaUserCircle } from 'react-icons/fa';
+import { LuMenu } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import MenuItem from "../models/MenuItem";
-import { color } from './ui/variables';
+import { color, mobile } from './ui/variables';
 
 const MenuComponent = styled.div`
     background-color: ${color.primary};
@@ -18,6 +19,7 @@ const MenuNav = styled.nav`
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+    gap: 20px;
 `;
 
 const MenuNavItems = styled.div`
@@ -25,6 +27,10 @@ const MenuNavItems = styled.div`
     gap: 25px;
     justify-content: flex-start;
     width: 100%;
+
+    @media (max-width: ${mobile.starts}) {
+        display: none;
+    }
 `;
 
 const MenuNavLogo = styled.div`
@@ -77,12 +83,77 @@ const MenuNavItemUser = styled.div`
     font-size: 30px;
 `
 
+const MenuMobileDropDown = styled.div`
+    display: none;
+    position: absolute;
+    top: 30px;
+    background-color: ${color.primary};
+    padding: 10px;
+    width: 215px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+`
+
+const MenuMobileDropDownItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    span {
+        font-weight: bolder;
+    }
+
+    hr {
+        width: 100%;
+    }
+`
+
+const MenuMobileDropDownItemSubMenu = styled.div`
+`
+
+const MenuMobile = styled.div`
+    display: none;
+    position: relative;
+
+    svg {
+        font-size: 30px;
+    }
+
+    &:hover ${MenuMobileDropDown} {
+        display: block;
+    }
+
+    @media (max-width: ${mobile.starts}) {
+        display: block;
+    }
+`
+
 export default function Menu(props: { items: MenuItem[] }) {
     const navigate = useNavigate();
 
     return (
         <MenuComponent>
             <MenuNav>
+                <MenuMobile>
+                    <LuMenu></LuMenu>
+                    <MenuMobileDropDown>
+                        {props.items.map((item, index) => (
+                            <MenuMobileDropDownItem key={index} onClick={() => navigate(item.url || '')}>
+                                {item.subMenu ? (
+                                    <span>{item.name}</span>
+                                ) : (
+                                    <>{item.name}</>
+                                )
+                                }
+                                {item.subMenu && item.subMenu.map((subItem, subIndex) => (
+                                    <MenuMobileDropDownItemSubMenu key={subIndex} onClick={() => navigate(subItem.url || '')}>{subItem.name}
+                                    </MenuMobileDropDownItemSubMenu>
+                                ))}
+                                <hr />
+                            </MenuMobileDropDownItem>
+                        ))}
+                    </MenuMobileDropDown>
+                </MenuMobile>
                 <MenuNavLogo onClick={() => navigate('/home')}>
                     <img src="/logo512.png" alt="" />
                     <span>Venus Data Center</span>

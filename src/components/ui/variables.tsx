@@ -54,5 +54,5 @@ export const body = {
 }
 
 export const mobile = {
-    'starts': '768px',
+    'starts': '530px',
 }
